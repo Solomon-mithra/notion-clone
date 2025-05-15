@@ -2,12 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import {
   ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from '@clerk/nextjs'
+import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
 
 
 export const metadata: Metadata = {
@@ -24,16 +21,12 @@ export default function RootLayout({
     <ClerkProvider>
     <html lang="en">
       <body>
-      <header className="flex justify-end items-center p-4 gap-4 h-16">
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
-        {children}
+          <Header />
+          <div className="flex min-h-screen">
+          <Sidebar />
+          <div className="flex-1 p-4 bg-ay-100 overflow-y-auto scrollbar-hide">{children}</div>  
+          </div>
+          
       </body>
     </html>
     </ClerkProvider>
