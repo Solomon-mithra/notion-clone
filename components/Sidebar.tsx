@@ -15,6 +15,7 @@ import { useUser } from '@clerk/nextjs'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { collectionGroup, DocumentData, query, where } from 'firebase/firestore'
 import { db } from '@/firebase'
+import SidebarOption from './SidebarOption'
 
 interface Roomdocument extends DocumentData {
     createdAt: Date
@@ -74,7 +75,7 @@ function Sidebar() {
         <>
             <NewDocumentButton />
 
-            <div className='flex py-4 flex-col spae-y-4 md:max-w-36'>
+            <div className='flex py-2 flex-col space-y-2 md:max-w-36'>
             {/* My documents */}
             {groupedData.owner.length === 0 ? (
                 <div className="text-gray-500 px-2 py-1">
@@ -84,23 +85,20 @@ function Sidebar() {
             ) : (
                 <>
                 <h2 className='text-gray-500 font-semibold text-sm'> My Documents</h2>
-                    {data?.docs?.map((doc) => (
-                        <p className='py-1' key={doc.id}>{doc.data().roomId}</p>
+                    {groupedData.owner.map((doc) => (
+                        // <p className='py-1' key={doc.id}>{doc.roomId}</p>
+                        <SidebarOption key={doc.id} id={doc.id} href={`/doc/${doc.id}`} />
                     ))}
                 </>
             )}
             </div>
 
             {/* Shared with me */}
-            {groupedData.editor.length === 0 ? (
-                <div className="text-gray-500 py-1">
-                    <h2 className='text-gray-500 font-semibold text-sm'> No documents found</h2>
-                </div>
-            ) : (
+            {groupedData.editor.length > 0 && (
                 <>
                     <h2 className='text-gray-500 font-semibold text-sm'> Shared Documents</h2>
-                    {data?.docs?.map((doc) => (
-                        <p key={doc.id}>{doc.data().roomId}</p>
+                    {groupedData.editor.map((doc) => (
+                        <SidebarOption key={doc.id} id={doc.id} href={`/doc/${doc.id}`} />
                     ))}
                 </>
             )}
