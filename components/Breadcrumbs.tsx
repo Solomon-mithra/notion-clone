@@ -22,28 +22,29 @@ function Breadcrumbs() {
                         <BreadcrumbLink href="/">Home</BreadcrumbLink>
                     </BreadcrumbItem>
 
-                    {segments.map((segment, index) => {
-                        if (!segment) return null;
-                        const href = `/${segments
-                            .slice(0, index + 1)
-                            .join('/')}`;
-
-                        const islast = index === segments.length - 1;
-                        return (
-                            <Fragment key={segment}>
-                                <BreadcrumbSeparator />
-                                <BreadcrumbItem>
-                                    {islast ? (
-                                        <BreadcrumbPage>{segment}</BreadcrumbPage>
-                                    ) : (
-                                        <BreadcrumbLink href={href}>
-                                            {segment}
-                                        </BreadcrumbLink>
-                                    )}
-                                </BreadcrumbItem>
-                            </Fragment>
-                        )
-                    })}
+                    {segments
+                        .filter((segment) => segment) // skip empty segments
+                        .map((segment, index) => {
+                            const href = '/' + segments
+                                .filter((seg) => seg)
+                                .slice(0, index + 1)
+                                .join('/');
+                            const isLast = index === segments.filter((seg) => seg).length - 1;
+                            return (
+                                <Fragment key={href}>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        {isLast ? (
+                                            <BreadcrumbPage>{segment}</BreadcrumbPage>
+                                        ) : (
+                                            <BreadcrumbLink href={href}>
+                                                {segment.charAt(0).toUpperCase() + segment.slice(1)}
+                                            </BreadcrumbLink>
+                                        )}
+                                    </BreadcrumbItem>
+                                </Fragment>
+                            );
+                        })}
                 </BreadcrumbList>
             </Breadcrumb>
         </div>
